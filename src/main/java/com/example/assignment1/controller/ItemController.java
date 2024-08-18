@@ -117,5 +117,20 @@ public class ItemController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var itemCode = req.getParameter("code");
+        var itemDataProcess = new ItemDataProcess();
+        try (var writer = resp.getWriter()) {
+            if (itemDataProcess.deleteItem(itemCode, connection)){
+                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                writer.write("Item Deleted");
+            }else {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                writer.write("Not Deleted");
+            }
+
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
     }
 }
