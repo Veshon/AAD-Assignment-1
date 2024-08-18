@@ -54,10 +54,8 @@ public class CustomerController extends HttpServlet {
         }
         // Save Data
         try (var writer = resp.getWriter()) {
-            Jsonb jsonb = JsonbBuilder.create(); // Creating jasonb object
-            CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class); // fromJson method eken request
-            // eka read krgena bind karanawa StudentDTO class ekata.
-            // Finally dto eka assign krgnnaw variable ekkt.
+            Jsonb jsonb = JsonbBuilder.create();
+            CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
             customerDTO.setId(UtilProcess.generateId());
             var saveData = new CustomerDataProcess();
             if(saveData.saveCustomer(customerDTO, connection)){
@@ -71,7 +69,6 @@ public class CustomerController extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
