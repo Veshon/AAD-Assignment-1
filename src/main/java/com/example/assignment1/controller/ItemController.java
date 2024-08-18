@@ -1,11 +1,14 @@
 package com.example.assignment1.controller;
 
 import com.example.assignment1.dao.CustomerDataProcess;
+import com.example.assignment1.dao.ItemDataProcess;
 import com.example.assignment1.dto.CustomerDTO;
+import com.example.assignment1.dto.ItemDTO;
 import com.example.assignment1.util.UtilProcess;
 import jakarta.json.JsonException;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,15 +20,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = "/customer", loadOnStartup = 1)
-public class CustomerController extends HttpServlet {
-
+@WebServlet(urlPatterns = "/item",loadOnStartup = 1)
+public class ItemController extends HttpServlet {
     Connection connection;
 
-    static String SAVE_CUSTOMER = "INSERT INTO CUSTOMER (id,name,address,mobile) VALUES (?,?,?,?)";
-    static String GET_CUSTOMER = "select * from customer where id = ?";
-    static String UPDATE_CUSTOMER = "update customer set name=?, address=?, mobile=? where id = ?";
-    static String DELETE_CUSTOMER = "delete from customer where id = ?";
+    static String SAVE_ITEM = "INSERT INTO ITEM (code,description,qty,price) VALUES (?,?,?,?)";
+    static String GET_ITEM = "select * from item where code = ?";
+    static String UPDATE_ITEM = "update item set description=?, qty=?, price=? where code = ?";
+    static String DELETE_ITEM = "delete from item where code = ?";
 
     @Override
     public void init() throws ServletException {
@@ -47,7 +49,6 @@ public class CustomerController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         if (!req.getContentType().toLowerCase().startsWith("application/json") || req.getContentType() == null) {
             //send error
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -55,11 +56,11 @@ public class CustomerController extends HttpServlet {
         // Save Data
         try (var writer = resp.getWriter()) {
             Jsonb jsonb = JsonbBuilder.create();
-            CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-            customerDTO.setId(UtilProcess.generateId());
-            var saveData = new CustomerDataProcess();
-            if(saveData.saveCustomer(customerDTO, connection)){
-                writer.write("Customer Saved");
+            ItemDTO itemDTO = jsonb.fromJson(req.getReader(), ItemDTO.class);
+            itemDTO.setCode(UtilProcess.generateId());
+            var saveData = new ItemDataProcess();
+            if(saveData.saveItem(itemDTO, connection)){
+                writer.write("Item Saved");
                 resp.setStatus(HttpServletResponse.SC_CREATED);
             }else {
                 writer.write("Not Saved");
@@ -73,13 +74,13 @@ public class CustomerController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var cusId = req.getParameter("id");
-        var dataProcess = new CustomerDataProcess();
+        var itemCode = req.getParameter("code");
+        var dataProcess = new ItemDataProcess();
         try (var writer = resp.getWriter()) {
-            var customer = dataProcess.getCustomer(cusId, connection);
+            var item = dataProcess.getItem(itemCode, connection);
             resp.setContentType("application/json");
             var jsonb = JsonbBuilder.create();
-            jsonb.toJson(customer, writer);
+            jsonb.toJson(item, writer);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -87,49 +88,11 @@ public class CustomerController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!req.getContentType().toLowerCase().startsWith("application/json") || req.getContentType() == null) {
-            //send error
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        }
-
-        try (var writer = resp.getWriter()) {
-            var ps = this.connection.prepareStatement(UPDATE_CUSTOMER);
-            var cusId = req.getParameter("c_id");
-            Jsonb jsonb = JsonbBuilder.create();
-            var customerDataProcess = new CustomerDataProcess();
-            var updateCustomer = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-
-            if (customerDataProcess.updateCustomer(cusId, updateCustomer, connection)) {
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-                writer.write("Customer Updated");
-
-            } else {
-                writer.write("Not Updated");
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            }
-
-        } catch (SQLException e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            throw new RuntimeException(e);
-        }
+        super.doPut(req, resp);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var cusId = req.getParameter("c_id");
-        var customerDataProcess = new CustomerDataProcess();
-        try (var writer = resp.getWriter()) {
-            if (customerDataProcess.deleteCustomer(cusId, connection)){
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-                writer.write("Customer Deleted");
-            }else {
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                writer.write("Not Deleted");
-            }
-
-        } catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            throw new RuntimeException(e);
-        }
+        super.doDelete(req, resp);
     }
 }

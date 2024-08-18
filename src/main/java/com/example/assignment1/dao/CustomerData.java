@@ -9,5 +9,5 @@ public interface CustomerData{
     CustomerDTO getCustomer(String studentId, Connection connection) throws SQLException;
     boolean saveCustomer(CustomerDTO studentDTO,Connection connection);
     boolean deleteCustomer(String studentId,Connection connection);
-    boolean updateCustomer(String studentId,CustomerDTO student,Connection connection);
+    boolean updateCustomer(String studentId,CustomerDTO updateCustomer,Connection connection);
 }
