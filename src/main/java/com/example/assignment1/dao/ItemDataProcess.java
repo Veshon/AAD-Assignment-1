@@ -54,7 +54,17 @@ public class ItemDataProcess implements ItemData{
     }
 
     @Override
-    public boolean updateItem(String itemId, ItemDTO updateItem, Connection connection) {
-        return false;
+    public boolean updateItem(String itemCode, ItemDTO updateItem, Connection connection) {
+        try {
+            var ps = connection.prepareStatement(UPDATE_ITEM);
+            ps.setString(1, updateItem.getDescription());
+            ps.setString(2, updateItem.getQty());
+            ps.setString(3, updateItem.getPrice());
+            ps.setString(4, itemCode);
+            return ps.executeUpdate()!=0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

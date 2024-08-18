@@ -88,7 +88,31 @@ public class ItemController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        if (!req.getContentType().toLowerCase().startsWith("application/json") || req.getContentType() == null) {
+            //send error
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+        try (var writer = resp.getWriter()) {
+            var ps = this.connection.prepareStatement(UPDATE_ITEM);
+            var itemCode = req.getParameter("code");
+            Jsonb jsonb = JsonbBuilder.create();
+            var itemDataProcess = new ItemDataProcess();
+            var updateItem = jsonb.fromJson(req.getReader(), ItemDTO.class);
+
+            if (itemDataProcess.updateItem(itemCode, updateItem, connection)) {
+                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                writer.write("Item Updated");
+
+            } else {
+                writer.write("Not Updated");
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+
+        } catch (SQLException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
