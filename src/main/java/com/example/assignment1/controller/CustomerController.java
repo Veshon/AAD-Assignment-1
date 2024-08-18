@@ -22,11 +22,6 @@ public class CustomerController extends HttpServlet {
 
     Connection connection;
 
-    static String SAVE_CUSTOMER = "INSERT INTO CUSTOMER (id,name,address,mobile) VALUES (?,?,?,?)";
-    static String GET_CUSTOMER = "select * from customer where id = ?";
-    static String UPDATE_CUSTOMER = "update customer set name=?, address=?, mobile=? where id = ?";
-    static String DELETE_CUSTOMER = "delete from customer where id = ?";
-
     @Override
     public void init() throws ServletException {
         var driverClass = getServletContext().getInitParameter("driver-class");
@@ -93,7 +88,6 @@ public class CustomerController extends HttpServlet {
         }
 
         try (var writer = resp.getWriter()) {
-            var ps = this.connection.prepareStatement(UPDATE_CUSTOMER);
             var cusId = req.getParameter("c_id");
             Jsonb jsonb = JsonbBuilder.create();
             var customerDataProcess = new CustomerDataProcess();
@@ -107,10 +101,6 @@ public class CustomerController extends HttpServlet {
                 writer.write("Not Updated");
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
-
-        } catch (SQLException e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            throw new RuntimeException(e);
         }
     }
 

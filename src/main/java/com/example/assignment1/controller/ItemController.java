@@ -24,11 +24,6 @@ import java.sql.SQLException;
 public class ItemController extends HttpServlet {
     Connection connection;
 
-    static String SAVE_ITEM = "INSERT INTO ITEM (code,description,qty,price) VALUES (?,?,?,?)";
-    static String GET_ITEM = "select * from item where code = ?";
-    static String UPDATE_ITEM = "update item set description=?, qty=?, price=? where code = ?";
-    static String DELETE_ITEM = "delete from item where code = ?";
-
     @Override
     public void init() throws ServletException {
         var driverClass = getServletContext().getInitParameter("driver-class");
@@ -94,7 +89,6 @@ public class ItemController extends HttpServlet {
         }
 
         try (var writer = resp.getWriter()) {
-            var ps = this.connection.prepareStatement(UPDATE_ITEM);
             var itemCode = req.getParameter("code");
             Jsonb jsonb = JsonbBuilder.create();
             var itemDataProcess = new ItemDataProcess();
@@ -109,9 +103,6 @@ public class ItemController extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
 
-        } catch (SQLException e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            throw new RuntimeException(e);
         }
     }
 
