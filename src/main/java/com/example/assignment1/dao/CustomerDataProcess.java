@@ -14,7 +14,22 @@ public class CustomerDataProcess implements CustomerData {
 
     @Override
     public CustomerDTO getCustomer(String customerId, Connection connection) throws SQLException {
-        return null;
+        var customerDTO = new CustomerDTO();
+        try {
+            var ps = connection.prepareStatement(GET_CUSTOMER);
+            ps.setString(1, customerId);
+            var resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                customerDTO.setId(resultSet.getString("id"));
+                customerDTO.setName(resultSet.getString("name"));
+                customerDTO.setAddress(resultSet.getString("address"));
+                customerDTO.setMobile(resultSet.getString("mobile"));
+
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customerDTO;
     }
 
     @Override
@@ -34,11 +49,28 @@ public class CustomerDataProcess implements CustomerData {
 
     @Override
     public boolean deleteCustomer(String customerId, Connection connection) {
-        return false;
+        try {
+            var ps = connection.prepareStatement(DELETE_CUSTOMER);
+            ps.setString(1, customerId);
+            return ps.executeUpdate()!=0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public boolean updateCustomer(String customerId, CustomerDTO customer, Connection connection) {
-        return false;
+    public boolean updateCustomer(String customerId, CustomerDTO updateCustomer, Connection connection) {
+        try {
+            var ps = connection.prepareStatement(UPDATE_CUSTOMER);
+            ps.setString(1, updateCustomer.getName());
+            ps.setString(2, updateCustomer.getAddress());
+            ps.setString(3, updateCustomer.getMobile());
+            ps.setString(4, customerId);
+            return ps.executeUpdate()!=0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

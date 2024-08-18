@@ -76,16 +76,64 @@ public class CustomerController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Hey");
+        var cusId = req.getParameter("id");
+        var dataProcess = new CustomerDataProcess();
+        try (var writer = resp.getWriter()) {
+            var student = dataProcess.getCustomer(cusId, connection);
+            resp.setContentType("application/json");
+            var jsonb = JsonbBuilder.create();
+            jsonb.toJson(student, writer); // toJson method ekata pass krnw student propperties tika. Itpsse write krnw.
+            //Finally clienta send krnw.
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (!req.getContentType().toLowerCase().startsWith("application/json") || req.getContentType() == null) {
+            //send error
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
 
+        try (var writer = resp.getWriter()) {
+            var ps = this.connection.prepareStatement(UPDATE_CUSTOMER);
+            var cusId = req.getParameter("c_id");
+            Jsonb jsonb = JsonbBuilder.create();
+            var customerDataProcess = new CustomerDataProcess();
+            var updateCustomer = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+
+            if (customerDataProcess.updateCustomer(cusId, updateCustomer, connection)) {
+                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                writer.write("Customer Updated");
+
+            } else {
+                writer.write("Not Updated");
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+
+        } catch (SQLException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var cusId = req.getParameter("c_id");
+        var customerDataProcess = new CustomerDataProcess();
+        try (var writer = resp.getWriter()) {
+            if (customerDataProcess.deleteCustomer(cusId, connection)){
+                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                writer.write("Customer Deleted");
+            }else {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                writer.write("Not Deleted");
+            }
 
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
     }
 }
