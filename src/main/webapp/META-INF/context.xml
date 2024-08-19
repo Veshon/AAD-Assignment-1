@@ -1,0 +1,10 @@
+<Context>
+
+    <Resource name="jdbc/customerRegistration" auth="Container"
+              type="javax.sql.DataSource" driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/aadassignment"
+              username="root" password="1234" maxTotal="10" maxIdle="8"
+              maxWaitMillis="-1"/>
+
+</Context>
+
