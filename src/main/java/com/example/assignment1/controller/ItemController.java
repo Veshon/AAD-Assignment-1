@@ -15,6 +15,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,7 +29,7 @@ public class ItemController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        var driverClass = getServletContext().getInitParameter("driver-class");
+/*        var driverClass = getServletContext().getInitParameter("driver-class");
         var dbUrl = getServletContext().getInitParameter("dbURL");
         var dbUserName = getServletContext().getInitParameter("dbUserName");
         var password = getServletContext().getInitParameter("dbPassword");
@@ -38,6 +41,14 @@ public class ItemController extends HttpServlet {
         try {
             this.connection = DriverManager.getConnection(dbUrl, dbUserName, password);
         } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
+
+        try {
+            var ctx = new InitialContext();
+            DataSource pool = (DataSource) ctx.lookup("java:comp/env/jdbc/customerRegistration");
+            this.connection =  pool.getConnection();
+        }catch (NamingException | SQLException e){
             e.printStackTrace();
         }
     }
