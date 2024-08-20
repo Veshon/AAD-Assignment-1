@@ -27,20 +27,7 @@ public class CustomerController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-/*        var driverClass = getServletContext().getInitParameter("driver-class");
-        var dbUrl = getServletContext().getInitParameter("dbURL");
-        var dbUserName = getServletContext().getInitParameter("dbUserName");
-        var password = getServletContext().getInitParameter("dbPassword");
-        try {
-            Class.forName(driverClass);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            this.connection = DriverManager.getConnection(dbUrl, dbUserName, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
+
         try {
             var ctx = new InitialContext();
             DataSource pool = (DataSource) ctx.lookup("java:comp/env/jdbc/customerRegistration");
