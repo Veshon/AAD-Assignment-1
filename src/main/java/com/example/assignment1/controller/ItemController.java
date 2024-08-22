@@ -1,14 +1,11 @@
 package com.example.assignment1.controller;
 
-import com.example.assignment1.dao.CustomerDataProcess;
-import com.example.assignment1.dao.ItemDataProcess;
-import com.example.assignment1.dto.CustomerDTO;
+import com.example.assignment1.dao.impl.ItemDataProcess;
 import com.example.assignment1.dto.ItemDTO;
 import com.example.assignment1.util.UtilProcess;
 import jakarta.json.JsonException;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,7 +17,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @WebServlet(urlPatterns = "/item",loadOnStartup = 1)

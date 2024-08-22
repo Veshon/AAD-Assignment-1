@@ -1,11 +1,12 @@
-package com.example.assignment1.dao;
+package com.example.assignment1.dao.impl;
 
+import com.example.assignment1.dao.OrderData;
 import com.example.assignment1.dto.OrderDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class OrderDataProcess implements OrderData{
+public class OrderDataProcess implements OrderData {
     static String SAVE_ORDER = "INSERT INTO orders (id,itemId,cusId,qtyOnHand,cusName,unitPrice,description,qty,total) VALUES (?,?,?,?,?,?,?,?,?)";
 //    static String GET_ORDER = "select * from orders where id = ?";
 //    static String UPDATE_ORDER = "update orders set description=?, qty=?, unitPrice=? where id = ?";
