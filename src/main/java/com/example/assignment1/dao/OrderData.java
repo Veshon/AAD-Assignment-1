@@ -7,8 +7,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface OrderData {
-    ItemDTO getItem(String orderId, Connection connection) throws SQLException;
-    boolean saveItem(OrderDTO orderDTO, Connection connection);
-    boolean deleteItem(String orderId,Connection connection);
-    boolean updateItem(String orderId,OrderDTO updateOrder,Connection connection);
+//    OrderDTO getItem(String orderId, Connection connection) throws SQLException;
+    boolean saveOrder(OrderDTO orderDTO, Connection connection);
+    boolean deleteOrder(String orderId,Connection connection);
+//    boolean updateOrder(String orderId,OrderDTO updateOrder,Connection connection);
 }
