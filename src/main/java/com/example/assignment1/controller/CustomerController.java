@@ -1,6 +1,6 @@
 package com.example.assignment1.controller;
 
-import com.example.assignment1.dao.CustomerDataProcess;
+import com.example.assignment1.dao.impl.CustomerDataProcess;
 import com.example.assignment1.dto.CustomerDTO;
 import com.example.assignment1.util.UtilProcess;
 import jakarta.json.JsonException;
@@ -17,7 +17,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @WebServlet(urlPatterns = "/customer", loadOnStartup = 1)
@@ -27,20 +26,7 @@ public class CustomerController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-/*        var driverClass = getServletContext().getInitParameter("driver-class");
-        var dbUrl = getServletContext().getInitParameter("dbURL");
-        var dbUserName = getServletContext().getInitParameter("dbUserName");
-        var password = getServletContext().getInitParameter("dbPassword");
-        try {
-            Class.forName(driverClass);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            this.connection = DriverManager.getConnection(dbUrl, dbUserName, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }*/
+
         try {
             var ctx = new InitialContext();
             DataSource pool = (DataSource) ctx.lookup("java:comp/env/jdbc/customerRegistration");
