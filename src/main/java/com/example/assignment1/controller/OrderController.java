@@ -1,11 +1,12 @@
 package com.example.assignment1.controller;
 
-import com.example.assignment1.dao.impl.ItemDataProcess;
-import com.example.assignment1.dto.ItemDTO;
+import com.example.assignment1.dao.impl.OrderDataProcess;
+import com.example.assignment1.dto.OrderDTO;
 import com.example.assignment1.util.UtilProcess;
 import jakarta.json.JsonException;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,13 +20,13 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = "/item",loadOnStartup = 1)
-public class ItemController extends HttpServlet {
+@WebServlet(urlPatterns = "/order",loadOnStartup = 1)
+
+public class OrderController extends HttpServlet {
     Connection connection;
 
     @Override
-    public void init() throws ServletException {
-
+    public void init(ServletConfig config) throws ServletException {
         try {
             var ctx = new InitialContext();
             DataSource pool = (DataSource) ctx.lookup("java:comp/env/jdbc/customerRegistration");
@@ -44,11 +45,11 @@ public class ItemController extends HttpServlet {
         // Save Data
         try (var writer = resp.getWriter()) {
             Jsonb jsonb = JsonbBuilder.create();
-            ItemDTO itemDTO = jsonb.fromJson(req.getReader(), ItemDTO.class);
-            itemDTO.setCode(UtilProcess.generateId());
-            var saveData = new ItemDataProcess();
-            if(saveData.saveItem(itemDTO, connection)){
-                writer.write("Item Saved");
+            OrderDTO orderDTO = jsonb.fromJson(req.getReader(), OrderDTO.class);
+            orderDTO.setId(UtilProcess.generateId());
+            var saveData = new OrderDataProcess();
+            if(saveData.saveOrder(orderDTO, connection)){
+                writer.write("Order Saved");
                 resp.setStatus(HttpServletResponse.SC_CREATED);
             }else {
                 writer.write("Not Saved");
@@ -61,52 +62,13 @@ public class ItemController extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var itemCode = req.getParameter("code");
-        var dataProcess = new ItemDataProcess();
-        try (var writer = resp.getWriter()) {
-            var item = dataProcess.getItem(itemCode, connection);
-            resp.setContentType("application/json");
-            var jsonb = JsonbBuilder.create();
-            jsonb.toJson(item, writer);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (!req.getContentType().toLowerCase().startsWith("application/json") || req.getContentType() == null) {
-            //send error
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        }
-
-        try (var writer = resp.getWriter()) {
-            var itemCode = req.getParameter("code");
-            Jsonb jsonb = JsonbBuilder.create();
-            var itemDataProcess = new ItemDataProcess();
-            var updateItem = jsonb.fromJson(req.getReader(), ItemDTO.class);
-
-            if (itemDataProcess.updateItem(itemCode, updateItem, connection)) {
-                resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-                writer.write("Item Updated");
-
-            } else {
-                writer.write("Not Updated");
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            }
-
-        }
-    }
-
-    @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var itemCode = req.getParameter("code");
-        var itemDataProcess = new ItemDataProcess();
+        var orderId = req.getParameter("id");
+        var orderDataProcess = new OrderDataProcess();
         try (var writer = resp.getWriter()) {
-            if (itemDataProcess.deleteItem(itemCode, connection)){
+            if (orderDataProcess.deleteOrder(orderId, connection)){
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-                writer.write("Item Deleted");
+                writer.write("Order Deleted");
             }else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 writer.write("Not Deleted");

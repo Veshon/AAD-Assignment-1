@@ -1,12 +1,12 @@
-package com.example.assignment1.dao;
+package com.example.assignment1.dao.impl;
 
-import com.example.assignment1.dto.CustomerDTO;
+import com.example.assignment1.dao.ItemData;
 import com.example.assignment1.dto.ItemDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class ItemDataProcess implements ItemData{
+public class ItemDataProcess implements ItemData {
 
     static String SAVE_ITEM = "INSERT INTO ITEM (code,description,qty,price) VALUES (?,?,?,?)";
     static String GET_ITEM = "select * from item where code = ?";

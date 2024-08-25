@@ -1,6 +1,5 @@
 package com.example.assignment1.dao;
 
-import com.example.assignment1.dto.CustomerDTO;
 import com.example.assignment1.dto.ItemDTO;
 
 import java.sql.Connection;
