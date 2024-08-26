@@ -1,12 +1,18 @@
-2024-08-26 06:05:47 INFO  c.e.a.controller.CustomerController - DB Configured
-2024-08-26 06:07:29 INFO  c.e.a.controller.CustomerController - Server Started
-2024-08-26 06:07:29 INFO  c.e.a.controller.CustomerController - DB Configured
-2024-08-26 06:08:34 INFO  c.e.a.controller.CustomerController - Customer Saved
-2024-08-26 06:08:55 INFO  c.e.a.controller.CustomerController - Customer Saved
-2024-08-26 06:17:45 INFO  c.e.a.controller.ItemController - Server Started
-2024-08-26 06:17:45 INFO  c.e.a.controller.ItemController - DB Configured
-2024-08-26 06:17:46 INFO  c.e.a.controller.CustomerController - Server Started
-2024-08-26 06:17:46 INFO  c.e.a.controller.CustomerController - DB Configured
-2024-08-26 06:17:46 INFO  c.e.a.controller.OrderController - Server Started
-2024-08-26 06:17:46 INFO  c.e.a.controller.OrderController - DB Configured
-2024-08-26 06:17:52 INFO  c.e.a.controller.CustomerController - Customer Deleted
+2024-08-26 06:24:42 INFO  c.e.a.controller.ItemController - Server Started
+2024-08-26 06:24:42 INFO  c.e.a.controller.ItemController - DB Configured
+2024-08-26 06:24:42 INFO  c.e.a.controller.CustomerController - Server Started
+2024-08-26 06:24:42 INFO  c.e.a.controller.CustomerController - DB Configured
+2024-08-26 06:24:42 INFO  c.e.a.controller.OrderController - Server Started
+2024-08-26 06:24:42 INFO  c.e.a.controller.OrderController - DB Configured
+2024-08-26 06:24:47 INFO  c.e.a.controller.CustomerController - Customer Saved
+2024-08-26 06:25:55 ERROR c.e.a.controller.CustomerController - Customer didn't Delete
+2024-08-26 06:26:09 INFO  c.e.a.controller.CustomerController - Customer Deleted
+2024-08-26 06:27:12 INFO  c.e.a.controller.CustomerController - Customer Deleted
+2024-08-26 06:27:23 INFO  c.e.a.controller.CustomerController - Customer Deleted
+2024-08-26 06:27:51 INFO  c.e.a.controller.ItemController - Server Started
+2024-08-26 06:27:51 INFO  c.e.a.controller.ItemController - DB Configured
+2024-08-26 06:27:51 INFO  c.e.a.controller.CustomerController - Server Started
+2024-08-26 06:27:51 INFO  c.e.a.controller.CustomerController - DB Configured (For Customer Table)
+2024-08-26 06:27:51 INFO  c.e.a.controller.OrderController - Server Started
+2024-08-26 06:27:51 INFO  c.e.a.controller.OrderController - DB Configured
+2024-08-26 06:28:45 INFO  c.e.a.controller.CustomerController - Customer Read

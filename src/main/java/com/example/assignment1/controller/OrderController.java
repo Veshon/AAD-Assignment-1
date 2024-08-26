@@ -40,7 +40,7 @@ public class OrderController extends HttpServlet {
             e.printStackTrace();
         }
         logger.info("Server Started");
-        logger.info("DB Configured");
+        logger.info("DB Configured (For Order Table)");
     }
 
     @Override
@@ -58,15 +58,16 @@ public class OrderController extends HttpServlet {
             if(saveData.saveOrder(orderDTO, connection)){
                 writer.write("Order Saved");
                 resp.setStatus(HttpServletResponse.SC_CREATED);
+                logger.info("Order Saved");
             }else {
                 writer.write("Not Saved");
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                logger.error("Order didn't Save");
             }
         } catch (JsonException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
-        logger.info("Order Saved");
     }
 
     @Override
@@ -77,15 +78,16 @@ public class OrderController extends HttpServlet {
             if (orderDataProcess.deleteOrder(orderId, connection)){
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 writer.write("Order Deleted");
+                logger.info("Order Deleted");
             }else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 writer.write("Not Deleted");
+                logger.error("Order didn't Delete");
             }
 
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
-        logger.info("Order Deleted");
     }
 }

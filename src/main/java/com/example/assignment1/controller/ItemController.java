@@ -40,7 +40,7 @@ public class ItemController extends HttpServlet {
             e.printStackTrace();
         }
         logger.info("Server Started");
-        logger.info("DB Configured");
+        logger.info("DB Configured (For Item Table)");
     }
 
     @Override
@@ -58,15 +58,16 @@ public class ItemController extends HttpServlet {
             if(saveData.saveItem(itemDTO, connection)){
                 writer.write("Item Saved");
                 resp.setStatus(HttpServletResponse.SC_CREATED);
+                logger.info("Item Saved");
             }else {
                 writer.write("Not Saved");
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                logger.error("Item didn't Saved");
             }
         } catch (JsonException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
-        logger.info("Item Saved");
     }
 
     @Override
@@ -78,10 +79,11 @@ public class ItemController extends HttpServlet {
             resp.setContentType("application/json");
             var jsonb = JsonbBuilder.create();
             jsonb.toJson(item, writer);
+            logger.info("Item Read");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        logger.info("Item Read");
+
     }
 
     @Override
@@ -100,10 +102,11 @@ public class ItemController extends HttpServlet {
             if (itemDataProcess.updateItem(itemCode, updateItem, connection)) {
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 writer.write("Item Updated");
-
+                logger.info("Item Updated");
             } else {
                 writer.write("Not Updated");
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                logger.error("Item didn't Update");
             }
         }
         logger.info("Item Updated");
@@ -117,15 +120,16 @@ public class ItemController extends HttpServlet {
             if (itemDataProcess.deleteItem(itemCode, connection)){
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 writer.write("Item Deleted");
+                logger.info("Item Deleted");
             }else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 writer.write("Not Deleted");
+                logger.error("Item didn't Delete");
             }
-
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
-        logger.info("Item Deleted");
+
     }
 }

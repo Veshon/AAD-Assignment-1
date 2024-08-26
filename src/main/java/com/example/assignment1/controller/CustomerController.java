@@ -39,7 +39,7 @@ public class CustomerController extends HttpServlet {
         }
 
         logger.info("Server Started");
-        logger.info("DB Configured");
+        logger.info("DB Configured (For Customer Table)");
 
     }
 
@@ -59,15 +59,16 @@ public class CustomerController extends HttpServlet {
             if(saveData.saveCustomer(customerDTO, connection)){
                 writer.write("Customer Saved");
                 resp.setStatus(HttpServletResponse.SC_CREATED);
+                logger.info("Customer Saved");
             }else {
                 writer.write("Not Saved");
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                logger.error("Customer didn't Save");
             }
         } catch (JsonException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
-        logger.info("Customer Saved");
     }
 
     @Override
@@ -79,11 +80,10 @@ public class CustomerController extends HttpServlet {
             resp.setContentType("application/json");
             var jsonb = JsonbBuilder.create();
             jsonb.toJson(customer, writer);
+            logger.info("Customer Read");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        logger.info("Customer Read");
     }
 
     @Override
@@ -102,13 +102,13 @@ public class CustomerController extends HttpServlet {
             if (customerDataProcess.updateCustomer(cusId, updateCustomer, connection)) {
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 writer.write("Customer Updated");
-
+                logger.info("Customer Updated ");
             } else {
                 writer.write("Not Updated");
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                logger.error("Customer didn't Update ");
             }
         }
-        logger.info("Customer Updated ");
     }
 
     @Override
@@ -119,15 +119,16 @@ public class CustomerController extends HttpServlet {
             if (customerDataProcess.deleteCustomer(cusId, connection)){
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 writer.write("Customer Deleted");
+                logger.info("Customer Deleted");
             }else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 writer.write("Not Deleted");
+                logger.error("Customer didn't Delete");
             }
 
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
-        logger.info("Customer Deleted");
     }
 }
