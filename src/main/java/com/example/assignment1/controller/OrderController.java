@@ -12,6 +12,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -23,6 +25,9 @@ import java.sql.SQLException;
 @WebServlet(urlPatterns = "/order",loadOnStartup = 1)
 
 public class OrderController extends HttpServlet {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+
     Connection connection;
 
     @Override
@@ -34,6 +39,8 @@ public class OrderController extends HttpServlet {
         }catch (NamingException | SQLException e){
             e.printStackTrace();
         }
+        logger.info("Server Started");
+        logger.info("DB Configured");
     }
 
     @Override
@@ -59,6 +66,7 @@ public class OrderController extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
+        logger.info("Order Saved");
     }
 
     @Override
@@ -78,5 +86,6 @@ public class OrderController extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
+        logger.info("Order Deleted");
     }
 }
