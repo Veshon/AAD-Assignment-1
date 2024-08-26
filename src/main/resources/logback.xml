@@ -8,7 +8,7 @@
 
     <!-- File Appender -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>D:\AAD\Assignment-1\src\main\resources\log</file>
+        <file>D:\AAD\Assignment-1\src\main\java\com\example\assignment1\logs</file>
         <append>true</append>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>

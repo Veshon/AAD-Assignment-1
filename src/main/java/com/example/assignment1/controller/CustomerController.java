@@ -38,6 +38,7 @@ public class CustomerController extends HttpServlet {
             e.printStackTrace();
         }
 
+        logger.info("Server Started");
         logger.info("DB Configured");
 
     }
@@ -66,6 +67,7 @@ public class CustomerController extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
+        logger.info("Customer Saved");
     }
 
     @Override

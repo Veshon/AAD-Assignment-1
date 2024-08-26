@@ -1,1 +1,5 @@
-2024-08-26 06:01:49 INFO  c.e.a.controller.CustomerController - DB Configured
+2024-08-26 06:05:47 INFO  c.e.a.controller.CustomerController - DB Configured
+2024-08-26 06:07:29 INFO  c.e.a.controller.CustomerController - Server Started
+2024-08-26 06:07:29 INFO  c.e.a.controller.CustomerController - DB Configured
+2024-08-26 06:08:34 INFO  c.e.a.controller.CustomerController - Customer Saved
+2024-08-26 06:08:55 INFO  c.e.a.controller.CustomerController - Customer Saved
