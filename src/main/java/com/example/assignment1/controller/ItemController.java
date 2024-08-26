@@ -109,7 +109,6 @@ public class ItemController extends HttpServlet {
                 logger.error("Item didn't Update");
             }
         }
-        logger.info("Item Updated");
     }
 
     @Override
@@ -130,6 +129,5 @@ public class ItemController extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
         }
-
     }
 }
