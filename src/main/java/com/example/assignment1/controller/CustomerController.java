@@ -11,6 +11,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -22,6 +24,7 @@ import java.sql.SQLException;
 @WebServlet(urlPatterns = "/customer", loadOnStartup = 1)
 public class CustomerController extends HttpServlet {
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
     Connection connection;
 
     @Override
@@ -34,6 +37,9 @@ public class CustomerController extends HttpServlet {
         }catch (NamingException | SQLException e){
             e.printStackTrace();
         }
+
+        logger.info("DB Configured");
+
     }
 
     @Override
