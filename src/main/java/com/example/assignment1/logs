@@ -20,3 +20,7 @@
 2024-08-26 06:35:01 INFO  c.e.a.controller.CustomerController - Customer Deleted
 2024-08-26 06:35:24 INFO  c.e.a.controller.ItemController - Item Saved
 2024-08-26 06:35:42 INFO  c.e.a.controller.ItemController - Item Updated
+2024-08-26 06:36:46 INFO  c.e.a.controller.ItemController - Item Updated
+2024-08-26 06:38:14 INFO  c.e.a.controller.ItemController - Item Updated
+2024-08-26 06:38:30 INFO  c.e.a.controller.ItemController - Item Deleted
+2024-08-26 06:38:41 INFO  c.e.a.controller.ItemController - Item Deleted

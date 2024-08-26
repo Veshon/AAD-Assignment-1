@@ -125,7 +125,6 @@ public class CustomerController extends HttpServlet {
                 writer.write("Not Deleted");
                 logger.error("Customer didn't Delete");
             }
-
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             throw new RuntimeException(e);
